@@ -1,0 +1,10 @@
+name: Test Github Actor and Token
+on: workflow_dispatch
+
+jobs:
+  builds:
+    runs-on: ubuntu-latest
+
+    steps: 
+      - name: test
+        run: echo '${{github.actor}}'
