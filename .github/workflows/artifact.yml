@@ -1,0 +1,20 @@
+name: Generate Artifact
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  generate-artifact:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Create text file
+      run: echo "Hello, world!" > hello.txt
+
+    - name: Archive artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: my-artifact
+        path: hello.txt
