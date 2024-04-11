@@ -1,9 +1,6 @@
 name: Generate Artifact
 
-on:
-  push:
-    branches:
-      - main
+on: workflow_dispatch
 
 jobs:
   generate-artifact:
