@@ -27,7 +27,8 @@ jobs:
         ORGANIZATION_NAME: ${{ github.event.inputs.org_name }}
         TEAM_NAME: ${{ github.event.inputs.team_name }}
       run: |
-        for repo in $(curl -s -H "Authorization: token $GITHUB_TOKEN" -X GET "https://api.github.com/orgs/$ORGANIZATION_NAME/repos" | jq -r '.[].name'); do
+        repos=$(curl -s -H "Authorization: token $GITHUB_TOKEN" -X GET "https://api.github.com/orgs/$ORGANIZATION_NAME/repos" | jq -r '.[].name')
+        for repo in $repos; do
           if [[ "$repo" == "${TEAM_NAME}"* ]]; then
             curl -s -H "Authorization: token $GITHUB_TOKEN" -X PUT "https://api.github.com/teams/$TEAM_NAME/repos/$ORGANIZATION_NAME/$repo"
             echo "Added $repo to the $TEAM_NAME team."
