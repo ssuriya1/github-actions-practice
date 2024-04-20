@@ -1,5 +1,16 @@
 name: Multiple Jobs
-on: push
+on: 
+  push:
+    branches: ['Master']
+
+  workflow_dispatch: 
+    inputs:
+      name:
+        description: name
+        default: Alis
+        required: true
+        type: string
+      
 
 jobs:
 
@@ -15,6 +26,8 @@ jobs:
 
   Job2:
     needs: Job1 # used for running in sequence
+    continue-on-error: true # used to run even if the existing job has failed.
+    
     runs-on: ubuntu-latest
     steps:
       - name: step 1
