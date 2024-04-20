@@ -1,4 +1,4 @@
-name: Test Github Actor and Token
+name: demo
 on: workflow_dispatch
 
 jobs:
@@ -7,4 +7,4 @@ jobs:
 
     steps: 
       - name: test
-        run: echo '${{github.actor}}'
+        run: echo First workflow running successfully!
