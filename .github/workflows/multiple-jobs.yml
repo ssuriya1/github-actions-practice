@@ -1,5 +1,5 @@
 name: Multiple Jobs
-on: workflow_dispatch
+on: push
 
 jobs:
 
@@ -14,6 +14,7 @@ jobs:
 
 
   Job2:
+    needs: Job1
     runs-on: ubuntu-latest
     steps:
       - name: step 1
@@ -21,4 +22,3 @@ jobs:
   
       - name: step 2
         run: echo step 2 working
-  
