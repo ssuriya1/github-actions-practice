@@ -35,3 +35,6 @@ jobs:
   
       - name: step 2
         run: echo step 2 working
+
+  Job3:
+    uses: ./.github/workflows/reuseable.yml

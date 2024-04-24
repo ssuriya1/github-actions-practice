@@ -1,0 +1,9 @@
+name: Reuseable
+on: workflow_call
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: ouptput
+        run: echo "Running"
