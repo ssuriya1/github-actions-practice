@@ -42,3 +42,10 @@ jobs:
     with:
       name: "Test user"
     secrets: inherit
+  
+  Job4:
+    needs: Job3
+    runs-on: ubuntu-latest
+    steps:
+      - name: print output
+        run: echo ${{ needs.Job3.outputs }}

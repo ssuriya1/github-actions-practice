@@ -10,7 +10,7 @@ on:
         outputs:
           myoutput:
             description: output
-            value: Hello + ${{inputs.name}}
+            value: ${{jobs.test.outputs.outcome}}
 
         secrets:
           someSecret:
@@ -18,7 +18,16 @@ on:
 
 jobs:
   test:
+    outputs:
+      outcome: ${{steps.set-result.outputs.myoutput}} 
     runs-on: ubuntu-latest
     steps:
       - name: ouptput
         run: echo "Running"
+      - name: print input
+        run: ${{inputs.name}}
+      - name: print output
+        run: ${{secrets.someSecret}}
+      - name: print output
+        id: set-result
+        run: echo "::set-output name=myoutput::success"
