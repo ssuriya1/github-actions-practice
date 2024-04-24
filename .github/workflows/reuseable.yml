@@ -1,5 +1,17 @@
 name: Reuseable
-on: workflow_call
+on: 
+    workflow_call: 
+        inputs:
+          name: 
+            type: string
+            required: true
+            description: your name
+
+        outputs:
+          myoutput:
+            description: output
+            value: Hello + ${{inputs.name}}
+
 
 jobs:
   test:
