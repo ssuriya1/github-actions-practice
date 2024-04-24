@@ -40,7 +40,7 @@ jobs:
     needs: Job1
     uses: ./.github/workflows/reuseable.yml
     with:
-      name: "Test user"
+      username: "Test user"
     secrets: inherit
   
   Job4:

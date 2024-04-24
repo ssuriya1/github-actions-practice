@@ -2,7 +2,7 @@ name: Reuseable
 on: 
     workflow_call: 
         inputs:
-          name: 
+          username: 
             type: string
             required: true
             description: your name
@@ -25,7 +25,7 @@ jobs:
       - name: ouptput
         run: echo "Running"
       - name: print input
-        run: ${{inputs.name}}
+        run: ${{inputs.username}}
       - name: print output
         run: ${{secrets.someSecret}}
       - name: print output
