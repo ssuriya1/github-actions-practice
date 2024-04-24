@@ -1,5 +1,19 @@
 name: First Workflow 
-on: workflow_dispatch
+on: 
+  workflow_dispatch:
+    inputs:
+      name: 
+        required: true
+        type: choice
+        options:
+          - yes
+          - no
+      
+      id: 
+        required: false
+        type: string
+        description: enter your id!
+
 
 jobs:
   builds:
