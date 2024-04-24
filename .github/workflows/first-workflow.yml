@@ -6,13 +6,14 @@ on:
         required: true
         type: choice
         options:
-          - yes
-          - no
+          - env1
+          - env2
+          - env3
       
       id: 
         required: false
         type: string
-        description: enter your id!
+        default: xxxxx-xxxxx-xxxx
 
 
 jobs:
