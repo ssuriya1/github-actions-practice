@@ -41,3 +41,4 @@ jobs:
     uses: ./.github/workflows/reuseable.yml
     with:
       name: "Test user"
+    secrets: inherit

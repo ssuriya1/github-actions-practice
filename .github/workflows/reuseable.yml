@@ -12,6 +12,9 @@ on:
             description: output
             value: Hello + ${{inputs.name}}
 
+        secrets:
+          someSecret:
+            required: false
 
 jobs:
   test:
