@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Generate random number
         id: generated-number
-        run: echo generate-output=$((RANDOM % 100))  >> $GITHUB_OUTPUT
+        run: generate-output=$((RANDOM % 100))  >> $GITHUB_OUTPUT
 
   use-number:
     runs-on: ubuntu-latest
