@@ -26,8 +26,8 @@ jobs:
         run: echo "Running"
       - name: print input
         run: ${{inputs.username}}
-      - name: print output
+      - name: print secrets
         run: ${{secrets.someSecret}}
       - name: print output
         id: set-result
-        run: echo "::set-output name=myoutput::success"
+        run: echo "name=myoutput" >> $GITHUB_OUTPUT
