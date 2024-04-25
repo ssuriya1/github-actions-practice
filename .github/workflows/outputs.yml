@@ -1,6 +1,8 @@
 name: Job Outputs Example
 
-on: push
+on: 
+    # push
+    workflow_dispatch
 
 jobs:
   generate-number:
