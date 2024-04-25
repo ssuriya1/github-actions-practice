@@ -18,8 +18,8 @@ on:
 
 jobs:
   test:
-    outputs:
-      outcome: ${{steps.set-result.outputs.myoutput}} 
+    # outputs:
+    #   outcome: ${{steps.set-result.outputs.myoutput}} 
     runs-on: ubuntu-latest
     steps:
       - name: ouptput
