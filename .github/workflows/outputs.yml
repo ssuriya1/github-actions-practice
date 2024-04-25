@@ -1,0 +1,21 @@
+name: Job Outputs Example
+
+on: push
+
+jobs:
+  generate-number:
+    runs-on: ubuntu-latest
+    outputs:
+      random_number: ${{ steps.generated-number.outputs.generate-output }}
+    steps:
+      - name: Generate random number
+        id: generated-number
+        run: echo 'generate-output=$((RANDOM % 100))'  >> $GITHUB_OUTPUT
+
+  use-number:
+    runs-on: ubuntu-latest
+    needs: generate-number
+    steps:
+      - name: Print the random number
+        run: |
+            echo "The random number is: ${{ needs.generate-number.outputs.random_number }}"
