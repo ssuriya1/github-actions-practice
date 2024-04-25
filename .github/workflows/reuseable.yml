@@ -19,7 +19,7 @@ on:
 jobs:
   test:
     outputs:
-      outcome: ${{steps.set-result.outputs.myoutput}} 
+      outcome: ${{steps.set-result.outputs.output}} 
     runs-on: ubuntu-latest
     steps:
       - name: ouptput
@@ -30,4 +30,4 @@ jobs:
         run: ${{secrets.someSecret}}
       - name: print output
         id: set-result
-        run: echo "name=myoutput" >> $GITHUB_OUTPUT
+        run: echo "output=myoutput" >> $GITHUB_OUTPUT
