@@ -3,17 +3,18 @@ on:
     workflow_call: 
         inputs:
           username: 
-            type: string
+            description: your name
             required: true
+            type: string
 
-        outputs:
-          myoutput:
-            description: output
-            value: ${{jobs.test.outputs.outcome}}
+        # outputs:
+        #   myoutput:
+        #     description: output
+        #     value: ${{jobs.test.outputs.outcome}}
 
-        secrets:
-          someSecret:
-            required: false
+        # secrets:
+        #   someSecret:
+        #     required: false
 
 jobs:
   test:
@@ -25,8 +26,8 @@ jobs:
         run: echo "Running"
       - name: print input
         run: ${{inputs.username}}
-      - name: print output
-        run: ${{secrets.someSecret}}
-      - name: print output
-        id: set-result
-        run: echo "::set-output name=myoutput::success"
+      # - name: print output
+      #   run: ${{secrets.someSecret}}
+      # - name: print output
+      #   id: set-result
+      #   run: echo "::set-output name=myoutput::success"
