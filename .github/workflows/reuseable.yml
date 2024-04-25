@@ -5,7 +5,6 @@ on:
           username: 
             type: string
             required: true
-            description: your name
 
         outputs:
           myoutput:
