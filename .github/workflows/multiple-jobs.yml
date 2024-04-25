@@ -16,12 +16,15 @@ jobs:
 
   Job1:
     runs-on: ubuntu-latest
+    outputs:
+      sample-output: ${{ steps.step-2.outputs.something }}
     steps:
       - name: step 1
         run: echo step 1 working
   
       - name: step 2
-        run: echo step 2 working
+        id: step-2
+        run: echo 'something={}' >> $GITHUB_OUTPUT
 
 
   Job2:
@@ -36,16 +39,16 @@ jobs:
       - name: step 2
         run: echo step 2 working
 
-  Job3:
-    needs: Job1
-    uses: ./.github/workflows/reuseable.yml
-    with:
-      username: "Test user"
-    secrets: inherit
+  # Job3:
+  #   needs: Job1
+  #   uses: ./.github/workflows/reuseable.yml
+  #   with:
+  #     username: "Test user"
+  #   secrets: inherit
   
-  Job4:
-    needs: Job3
-    runs-on: ubuntu-latest
-    steps:
-      - name: print output
-        run: echo ${{ needs.Job3.outputs }}
+  # Job4:
+  #   needs: Job3
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: print output
+  #       run: echo ${{ needs.Job3.outputs }}
