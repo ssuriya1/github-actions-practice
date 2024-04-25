@@ -38,7 +38,7 @@ jobs:
   
       - env:
           sample-output: ${{ needs.Job1.outputs.sample-output }}
-        run: echo $sample-output
+        run: echo "$sample-output"
 
   # Job3:
   #   needs: Job1
