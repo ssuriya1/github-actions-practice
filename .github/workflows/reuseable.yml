@@ -3,15 +3,31 @@ on:
   workflow_call: 
     inputs:
       username: 
-        description: your name
-        required: true
         type: string
+        required: true
+        description: your name
+
+    outputs:
+      myoutput:
+        description: output
+        value: ${{jobs.test.outputs.outcome}}
+
+    secrets:
+      someSecret:
+        required: false
 
 jobs:
   test:
+    outputs:
+      outcome: ${{steps.set-result.outputs.myoutput}} 
     runs-on: ubuntu-latest
     steps:
       - name: ouptput
         run: echo "Running"
       - name: print input
         run: ${{inputs.username}}
+      - name: print output
+        run: ${{secrets.someSecret}}
+      - name: print output
+        id: set-result
+        run: echo "::set-output name=myoutput::success"
