@@ -30,4 +30,4 @@ jobs:
         run: ${{secrets.someSecret}}
       - name: print output
         id: set-result
-        run: echo "output=myoutput" >> $GITHUB_OUTPUT
+        run: echo "output=success" >> $GITHUB_OUTPUT

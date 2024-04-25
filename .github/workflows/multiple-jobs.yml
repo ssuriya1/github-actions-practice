@@ -54,4 +54,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: print output
-        run: echo ${{ needs.Job3.outputs }}
+        run: echo ${{ needs.Job3.outputs.myoutput }}
