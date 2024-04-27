@@ -3,6 +3,7 @@ description: 'Creating new custom action for practice'
 runs: 
   using: 'composite'
   steps: 
+    - uses: actions/checkout@v4
     - name: custom-action
       run: echo Created new custom action
       shell: bash
