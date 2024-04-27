@@ -55,3 +55,11 @@ jobs:
     steps:
       - name: print output
         run: echo ${{ needs.Job3.outputs.myoutput }}
+
+  Job5:
+    needs: Job3
+    runs-on: ubuntu-latest
+    steps:
+      - name: custom-action
+        uses: ./.github/actions
+
