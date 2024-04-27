@@ -59,6 +59,7 @@ jobs:
   Job5:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - name: custom-action
         uses: ./.github/actions
 
