@@ -60,6 +60,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: custom-action
-        run: find .github
-        # uses: ./.github/actions
+        uses: .github/actions
 
