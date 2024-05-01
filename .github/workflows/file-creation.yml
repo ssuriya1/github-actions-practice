@@ -1,0 +1,22 @@
+name: Create and Commit File
+
+on: workflow_dispatch
+
+jobs:
+  create-and-commit-file:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Create File
+      run: echo "This is a new file created by GitHub Actions" > newfile.txt
+
+    - name: Commit Changes
+      run: |
+        git config --global user.email "actions@users.noreply.github.com"
+        git config --global user.name "GitHub Actions"
+        git add newfile.txt
+        git commit -m "Add new file via GitHub Actions"
+        git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:main
