@@ -6,3 +6,4 @@ runs:
     - name: custom-action
       run: echo Created new custom action
       shell: bash
+
