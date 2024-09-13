@@ -1,7 +1,7 @@
 name: Multiple Jobs
 on: 
-  push:
-    branches: ['Master']
+  # push:
+  #   branches: ['Master']
 
   workflow_dispatch: 
     inputs:
