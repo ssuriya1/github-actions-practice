@@ -1,16 +1,29 @@
-name: Sample Workflow
+name: Pull Request Workflow
 
-on: push
+on: pull_request
+
+# defaults:
+#   run:
+#     working-directory: action
+#     shell: actor
+
+env:
+  EVENT_CONTEXT: ${{ toJson(github) }}
 
 jobs:
-  example:
+  pr-check:
     runs-on: ubuntu-latest
+    # defaults:
+    #   run:
+    #     shell: action
+    # if: ${{ vars.MY_VAR }} == 'MY_VALUE'
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Display GitHub context variables
+      - name: GitHub Predefined Variables
+        if: ${{ always() }}
         run: |
           echo "GITHUB_ACTION: ${{ github.action }}"
           echo "GITHUB_ACTOR: ${{ github.actor }}"
@@ -29,5 +42,15 @@ jobs:
           echo "RUNNER_OS: ${{ runner.os }}"
           echo "RUNNER_TEMP: ${{ runner.temp }}"
           echo "RUNNER_TOOL_CACHE: ${{ runner.tool_cache }}"
-          echo "JOB_NAME: ${{ job.name }}"
-          echo "STEP_NAME: ${{ steps.name }}"
+
+      - name: Display Pull Request Information
+        run: |
+          echo "PR Number: ${{ github.event.pull_request.number }}"
+          echo "PR Title: ${{ github.event.pull_request.title }}"
+          echo "PR Body: ${{ github.event.pull_request.body }}"
+          echo "PR User: ${{ github.event.pull_request.user.login }}"
+          echo "PR Base Branch: ${{ github.event.pull_request.base.ref }}"
+          echo "PR Head Branch: ${{ github.event.pull_request.head.ref }}"
+
+      - name: Display Event Details
+        run: echo ${{ env.EVENT_CONTEXT }}
