@@ -53,4 +53,4 @@ jobs:
           echo "PR Head Branch: ${{ github.event.pull_request.head.ref }}"
 
       - name: Display Event Details
-        run: ${{ env.EVENT_CONTEXT }}
+        run: echo ${{ env.EVENT_CONTEXT }}
