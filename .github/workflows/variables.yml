@@ -51,3 +51,6 @@ jobs:
           echo "PR User: ${{ github.event.pull_request.user.login }}"
           echo "PR Base Branch: ${{ github.event.pull_request.base.ref }}"
           echo "PR Head Branch: ${{ github.event.pull_request.head.ref }}"
+
+      - name: Display Event Details
+        run: ${{ env.EVENT_CONTEXT }}
