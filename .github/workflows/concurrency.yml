@@ -1,6 +1,10 @@
 name: CI Pipeline
 
-on: workflow_dispatch
+on: 
+    workflow_dispatch:
+        inputs:
+            Environment: 
+              type: number
 
 jobs:
   build-linux:

@@ -2,9 +2,21 @@ name: Pull Request Workflow
 
 on: pull_request
 
+# defaults:
+#   run:
+#     working-directory: action
+#     shell: actor
+
+env:
+  EVENT_CONTEXT: ${{ toJson(github) }}
+
 jobs:
   pr-check:
     runs-on: ubuntu-latest
+    # defaults:
+    #   run:
+    #     shell: action
+    # if: ${{ vars.MY_VAR }} == 'MY_VALUE'
 
     steps:
       - name: Checkout code
