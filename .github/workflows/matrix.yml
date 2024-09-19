@@ -6,6 +6,7 @@ jobs:
     Job1:
         runs-on: ubuntu-latest
         strategy:
+            max-parallel: 1
             matrix:
                 test1: ["one", "two", "three"]
                 test2: ["four", "five", "six"]
