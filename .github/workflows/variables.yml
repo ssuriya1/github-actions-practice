@@ -1,6 +1,11 @@
 name: Sample Workflow
 
-on: push
+on: workflow_dispatch
+
+defaults:
+  run:
+    shell: bash
+    working-directory: /
 
 jobs:
   example:

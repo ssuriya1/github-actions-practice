@@ -1,0 +1,15 @@
+name: Test Matrix
+
+on: push
+
+jobs:
+    Job1:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                test1: ["one", "two", "three"]
+                test2: ["four", "five", "six"]
+        
+        steps:
+            - name: test
+              run: ${{matrix.test1}}${{matrix.test2}}
