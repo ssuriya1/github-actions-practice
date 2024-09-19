@@ -12,4 +12,4 @@ jobs:
         
         steps:
             - name: test
-              run: ${{matrix.test1}}${{matrix.test2}}
+              run: echo ${{matrix.test1}}${{matrix.test2}}
