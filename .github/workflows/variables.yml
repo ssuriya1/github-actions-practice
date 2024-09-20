@@ -21,7 +21,7 @@ jobs:
 
       - name: Display GitHub context variables
         run: |
-          if [ "$TEST1" == 'test 1 value' ]; then
+          if [ "$TEST1" == 'Test 1 value' ]; then
               echo 'value is same'
           else
               echo 'value is different'
