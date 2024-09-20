@@ -21,7 +21,11 @@ jobs:
 
       - name: Display GitHub context variables
         run: |
-          echo $TEST1
+          if [ "$TEST1" == 'test 1 value' ]; then
+              echo 'value is same'
+          else
+              echo 'value is different'
+          fi
           echo "GITHUB_ACTION: ${{ github.action }}"
           echo "GITHUB_ACTOR: ${{ github.actor }}"
           echo "GITHUB_EVENT_NAME: ${{ github.event_name }}"
