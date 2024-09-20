@@ -3,7 +3,7 @@ name: Sample Workflow
 on: 
   workflow_dispatch:
     inputs:
-      test:
+      env:
         type: environment
 
 defaults:
@@ -14,6 +14,7 @@ defaults:
 jobs:
   example:
     runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.env }}
 
     steps:
       - name: Checkout code
@@ -21,7 +22,7 @@ jobs:
 
       - name: Display GitHub context variables
         run: |
-          echo "value ${{ vars.TEST1 }}"
+          echo $TEST1
           echo "GITHUB_ACTION: ${{ github.action }}"
           echo "GITHUB_ACTOR: ${{ github.actor }}"
           echo "GITHUB_EVENT_NAME: ${{ github.event_name }}"
