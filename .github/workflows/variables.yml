@@ -1,6 +1,10 @@
 name: Sample Workflow
 
-on: workflow_dispatch
+on: 
+  workflow_dispatch:
+    inputs:
+      test:
+        type: environment
 
 defaults:
   run:
@@ -17,6 +21,7 @@ jobs:
 
       - name: Display GitHub context variables
         run: |
+          echo $TEST1
           echo "GITHUB_ACTION: ${{ github.action }}"
           echo "GITHUB_ACTOR: ${{ github.actor }}"
           echo "GITHUB_EVENT_NAME: ${{ github.event_name }}"
@@ -34,5 +39,3 @@ jobs:
           echo "RUNNER_OS: ${{ runner.os }}"
           echo "RUNNER_TEMP: ${{ runner.temp }}"
           echo "RUNNER_TOOL_CACHE: ${{ runner.tool_cache }}"
-          echo "JOB_NAME: ${{ job.name }}"
-          echo "STEP_NAME: ${{ steps.name }}"
