@@ -22,7 +22,7 @@ jobs:
 
       - name: Display GitHub context variables
         run: |
-          echo $TEST1
+          echo "The value of TEST1 is: $TEST1"
           echo "GITHUB_ACTION: ${{ github.action }}"
           echo "GITHUB_ACTOR: ${{ github.actor }}"
           echo "GITHUB_EVENT_NAME: ${{ github.event_name }}"
