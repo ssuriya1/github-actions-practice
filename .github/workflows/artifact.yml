@@ -1,6 +1,8 @@
 name: Multi-Artifact Workflow
 
-on: push
+on:
+  push:
+    branches: [main]
 
 jobs:
   job1:
@@ -17,8 +19,6 @@ jobs:
 
           echo "Uploading artifact 1..."
           echo "::set-output name=artifact1_path::artifact1.txt"
-          echo "::set-output name=artifact2_path::artifact2.txt"
-          echo "::set-output name=artifact3_path::artifact3.txt"
           echo "Uploading artifact 2..."
           echo "::set-output name=artifact2_path::artifact2.txt"
           echo "Uploading artifact 3..."
@@ -33,16 +33,16 @@ jobs:
 
       - name: Download and store artifacts
         run: |
-          artifact1_path=$(jobs.job1.outputs.artifact1_path)
-          artifact2_path=$(jobs.job1.outputs.artifact2_path)
-          artifact3_path=$(jobs.job1.outputs.artifact3_path)
+          artifact1_path="${{ jobs.job1.outputs.artifact1_path }}"
+          artifact2_path="${{ jobs.job1.outputs.artifact2_path }}"
+          artifact3_path="${{ jobs.job1.outputs.artifact3_path }}"
 
           echo "Downloading artifact 1..."
-          curl -o artifact1.txt ${{ runner.artifacts.downloads }}/${artifact1_path}
+          curl -o artifact1.txt ${{ runner.artifacts.downloads }}/"$artifact1_path"
           echo "Downloading artifact 2..."
-          curl -o artifact2.txt ${{ runner.artifacts.downloads }}/${artifact2_path}
+          curl -o artifact2.txt ${{ runner.artifacts.downloads }}/"$artifact2_path"
           echo "Downloading artifact 3..."
-          curl -o artifact3.txt ${{ runner.artifacts.downloads }}/${artifact3_path}
+          curl -o artifact3.txt ${{ runner.artifacts.downloads }}/"$artifact3_path"
 
           echo "Downloaded artifacts:"
           ls -l artifact1.txt artifact2.txt artifact3.txt
