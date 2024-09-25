@@ -1,6 +1,6 @@
 name: Multi-Artifact Workflow
 
-on: push
+on: [push, workflow_dispatch]
 
 jobs:
   job1:
