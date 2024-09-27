@@ -21,8 +21,8 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: my-artifacts
-          path: ${{ matrix.files }}
+          path: my-artifacts
+          name: ${{ matrix.files }}
 
   job2:
     needs: job1
