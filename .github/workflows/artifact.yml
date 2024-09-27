@@ -38,4 +38,4 @@ jobs:
 
       - name: List downloaded artifacts
         run: |
-          ls -l artifacts/
+          ls -R
