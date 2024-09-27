@@ -38,4 +38,4 @@ jobs:
           path: my-artifacts
   
       - name: List downloaded artifacts
-        run: ls -R
+        run: ls ./my-artifacts
