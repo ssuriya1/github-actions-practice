@@ -1,41 +1,39 @@
 name: Multi-Artifact Workflow
-
 on: [push, workflow_dispatch]
 
 jobs:
-  job1:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        files: [artifact1.txt, artifact2.txt, artifact3.txt]
+  job1:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+          files: [artifact1.txt, artifact2.txt, artifact3.txt]
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      - name: Create multiple artifacts
-        run: |
-          # Create artifacts with different names and contents
-          echo "Artifact 1 content" > artifact1.txt
-          echo "Artifact 2 content" > artifact2.txt
-          echo "Artifact 3 content" > artifact3.txt
+    - name: Create multiple artifacts
+      run: |
+        echo "Artifact 1 content" > artifact1.txt
+        echo "Artifact 2 content" > artifact2.txt
+        echo "Artifact 3 content" > artifact3.txt
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: ${{ matrix.files }} # Upload each artifact with its specific name
-          path: ${{ matrix.files }} # Specify the individual file for each artifact
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ matrix.files }}
+        path: ${{ matrix.files }}
 
-  job2:
-    needs: job1
-    runs-on: ubuntu-latest
+  job2:
+      needs: job1
+      runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Download all artifacts
-        uses: actions/download-artifact@v3
-
-      - name: List downloaded artifacts
-        run: ls -R
+      steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+  
+      - name: Download all artifacts
+        uses: actions/download-artifact@v3
+  
+      - name: List downloaded artifacts
+        run: ls -R
