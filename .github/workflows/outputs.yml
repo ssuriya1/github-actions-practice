@@ -21,3 +21,24 @@ jobs:
       - name: Print the random number
         run: |
             echo "The random number is: ${{ needs.generate-number.outputs.random_number }}"
+
+  set-files:
+    runs-on: ubuntu-latest
+    outputs:
+      file_path: ${{ steps.set_output.outputs.file }}
+
+    steps:
+      - name: Create a file
+        run: echo "Hello" > hello.txt
+
+      - name: Set output
+        id: set_output
+        run: echo "file=$(pwd)/hello.txt" >> $GITHUB _OUTPUT
+
+  get-files:
+    needs: set-files
+    runs-on: ubuntu-latest
+    steps:
+      - name: Use the file from set-files
+        run: cat ${{ needs.set-files.outputs.file_path }}
+  
