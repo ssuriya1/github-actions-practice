@@ -4,6 +4,9 @@ on: [push, workflow_dispatch]
 jobs:
   job1:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        files: [artifact1.txt, artifact2.txt, artifact3.txt]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -19,10 +22,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: my-artifacts
-          path: |
-            artifact1.txt
-            artifact2.txt
-            artifact3.txt
+          path: ${{ matrix.files }}
 
   job2:
     needs: job1
