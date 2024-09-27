@@ -37,5 +37,7 @@ jobs:
         with:
           path: my-artifacts
   
-      - name: List downloaded artifacts
-        run: ls ./my-artifacts
+      - name: List downloaded artifacts and move to file
+        run: | 
+          ls ./my-artifacts | tee files.log
+          cat ./my-artifacts/files.log
