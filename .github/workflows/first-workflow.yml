@@ -22,7 +22,8 @@ jobs:
 
     steps: 
       - name: test
-        run: echo First workflow running successfully!
+        run: | 
+          exit 1
 
   outputs:
     runs-on: ubuntu-latest
