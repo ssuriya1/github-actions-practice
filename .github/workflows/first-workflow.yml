@@ -1,20 +1,5 @@
 name: First Workflow 
-on: 
-  workflow_dispatch:
-    inputs:
-      name: 
-        required: true
-        type: choice
-        options:
-          - env1
-          - env2
-          - env3
-      
-      id: 
-        required: false
-        type: string
-        default: xxxxx-xxxxx-xxxx
-
+on: push
 
 jobs:
   builds:
@@ -29,10 +14,11 @@ jobs:
   second_job:
     runs-on: ubuntu-latest
     needs: builds
-    if: ${{ needs.builds.result == 'failure' }} # Ensures this job runs only on failure.
+    if: always()
 
     steps:
       - name: Output Failure Information
         run: |
           echo "Builds job failed."
           echo "Result: ${{ needs.builds.result }}"
+          echo ${{ needs.builds.result == 'failure' }}
