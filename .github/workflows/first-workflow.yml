@@ -21,16 +21,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: test
+      - name: Simulate Failure
         run: |
-          exit 1
+          echo "Simulating failure"
+          exit 1  # This step causes the job to fail.
 
   second_job:
     runs-on: ubuntu-latest
     needs: builds
-    if: ${{ needs.builds.result == 'failure' }}
+    if: ${{ needs.builds.result == 'failure' }} # Ensures this job runs only on failure.
 
     steps:
-      - name: output
+      - name: Output Failure Information
         run: |
-          echo "Build Result: ${{ needs.builds.result }}"
+          echo "Builds job failed."
+          echo "Result: ${{ needs.builds.result }}"
