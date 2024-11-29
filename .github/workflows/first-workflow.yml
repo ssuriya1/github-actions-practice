@@ -20,18 +20,17 @@ jobs:
   builds:
     runs-on: ubuntu-latest
 
-    steps: 
+    steps:
       - name: test
-        run: | 
+        run: |
           exit 1
 
-  outputs:
+  second_job:
     runs-on: ubuntu-latest
     needs: builds
-    if: ${{ needs.builds.result }} == 'failure'
+    if: ${{ needs.builds.result == 'failure' }}
 
     steps:
       - name: output
         run: |
-          echo ${{ needs.builds.outputs }}
-          echo ${{ needs.builds.result }}
+          echo "Build Result: ${{ needs.builds.result }}"
