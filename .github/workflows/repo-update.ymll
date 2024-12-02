@@ -1,0 +1,17 @@
+name: repo update
+on: [workflow_dispatch]
+
+jobs:
+  addFile:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: create file
+        run: |
+            echo "This is a sample text in the dummy file." > dummyfile.txt
+
+      - name: upload file
+        run: |
+            git add .
+            git commit -m "added/updated file"
+            git push
