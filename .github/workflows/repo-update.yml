@@ -10,9 +10,14 @@ jobs:
         run: |
             echo "This is a sample text in the dummy file." > dummyfile.txt
 
+      - name: config git
+        run: |
+           git config --global user.name "GitHub Actions"
+           git config --global user.email "actions@users.noreply.github.com"
+           git init
+           git add .
+           git commit -m "added/updated file"
+        
       - name: upload file
         run: |
-            git init
-            git add .
-            git commit -m "added/updated file"
-            git push
+           git push
