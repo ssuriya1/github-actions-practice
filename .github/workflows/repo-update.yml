@@ -12,6 +12,7 @@ jobs:
 
       - name: upload file
         run: |
+            git init
             git add .
             git commit -m "added/updated file"
             git push
