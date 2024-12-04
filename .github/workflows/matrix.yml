@@ -28,11 +28,11 @@ jobs:
                 test2: ["four", "five", "six"]
         
         steps:
-            - name: test
-              env:
-                  testEnv: something
-              run: echo ${{env.testEnv}}${{matrix.test1}}
+            # - name: test
+            #   env:
+            #       testEnv: something
+            #   run: echo ${{env.testEnv}}${{matrix.test1}}
             
             - name: dynamic matrix pointing
               run: |
-                echo ${{ env.userNames }}
+                echo ${{ fromJson(env.userNames) }}
