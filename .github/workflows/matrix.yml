@@ -1,44 +1,39 @@
-name: Dynamic Matrix Strategy Example
-
+name: Dynamic Matrix Example
+ 
 on:
   workflow_dispatch:
     inputs:
-      fruits:
-        description: 'Comma-separated list of fruits'
+      file_list:
+        description: "Comma-separated list of XML files"
         required: true
-        default: 'apple,banana,orange'
-
+        default: "ndc_17_2_FlowTest_e2e_pack1.xml,ndc_17_2_FlowTest_e2e_pack2.xml"
+ 
 jobs:
-  prepare-matrix:
+  setup-matrix:
     runs-on: ubuntu-latest
     outputs:
-      fruits: ${{ steps.split-output.outputs.fruits }}
+matrix: ${{ steps.build-matrix.outputs.matrix }}
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Split fruits string into array
-        id: split-output
+      - name: Generate Matrix JSON
         run: |
-          fruits="${{ github.event.inputs.fruits }}"
-          # Split the string by commas and format as a JSON array
-          fruits_array=$(echo $fruits | tr ',' '\n' | jq -R . | jq -s .)
+          # Get the input value
+          FILE_LIST="${{ github.event.inputs.file_list }}"
           
-          # Write fruits array to an environment file
-          echo "fruits_array=$fruits_array" >> $GITHUB_ENV
-          # Set fruits as output using environment files
-          echo "fruits=$fruits_array" >> $GITHUB_ENV
-
-  run-matrix:
-    needs: prepare-matrix
+          # Convert the comma-separated list into a JSON array
+          MATRIX=$(echo "[ $(echo $FILE_LIST | sed 's/,/\",\"/g' | sed 's/^/\"/;s/$/\"/') ]")
+          
+          # Output the matrix JSON
+          echo "Matrix JSON: $MATRIX"
+          echo "::set-output name=matrix::$MATRIX"
+        id: build-matrix
+ 
+  run-matrix-jobs:
+    needs: setup-matrix
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        fruit: ${{ fromJson(needs.prepare-matrix.outputs.fruits) }}
+        file: ${{ fromJson(needs.setup-matrix.outputs.matrix) }}
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Display fruit from matrix
+      - name: Process File
         run: |
-          echo "The fruit is ${{ matrix.fruit }}"
+          echo "Processing file: ${{ matrix.file }}"
