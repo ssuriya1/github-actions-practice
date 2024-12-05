@@ -12,7 +12,7 @@ jobs:
   setup-matrix:
     runs-on: ubuntu-latest
     outputs:
-matrix: ${{ steps.build-matrix.outputs.matrix }}
+    matrix: ${{ steps.build-matrix.outputs.matrix }}
     steps:
       - name: Generate Matrix JSON
         run: |
