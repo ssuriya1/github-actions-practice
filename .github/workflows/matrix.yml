@@ -34,7 +34,13 @@ jobs:
       
       - name: Log Count
         run: |
-          echo "File count: ${{ steps.build-matrix.outputs.count }}"
+          FILE_COUNT=${{ steps.build-matrix.outputs.count }}
+          INPUT_COUNT=${{ inputs.max_parallel }}
+          if [ "$FILE_COUNT" -le "$INPUT_COUNT" ]; then
+            echo "true"
+          else
+            echo "false"
+          fi        
 
   run-matrix-jobs:
     needs: setup-matrix
