@@ -16,6 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.build-matrix.outputs.matrix }}
+      count: ${{ steps.build-matrix.outputs.count }}
     steps:
       - name: Generate Matrix JSON
         run: |
@@ -30,7 +31,7 @@ jobs:
       
       - name: Max Parallel Run
         run: |
-          echo ${{ steps.build-matrix.outputs.count }}
+          echo "Count: ${{ steps.build-matrix.outputs.count }}"
 
 
   run-matrix-jobs:
