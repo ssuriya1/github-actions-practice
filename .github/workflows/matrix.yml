@@ -22,6 +22,7 @@ jobs:
           FILE_LIST="${{ inputs.file_list }}"
           COUNT=$(echo $FILE_LIST | tr -cd ',' | wc -c)
           COUNT=$((COUNT + 1))
+          echo $COUNT
           MATRIX=$(echo "[ $(echo $FILE_LIST | sed 's/,/\",\"/g' | sed 's/^/\"/;s/$/\"/') ]")
           echo "matrix::$MATRIX" >> GITHUB_OUTPUT
           echo "count::$COUNT" >> GITHUB_OUTPUT
@@ -29,7 +30,7 @@ jobs:
       
       - name: Max Parallel Run
         run: |
-          echo $COUNT
+          echo ${{ steps.build-matrix.outputs.count }}
 
 
   run-matrix-jobs:
