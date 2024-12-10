@@ -4,9 +4,13 @@ on:
   workflow_dispatch:
     inputs:
       file_list:
+        type: string
         description: 'Comma-separated list of XML files'
         required: true
-        default: 'ndc_17_2_FlowTest_e2e_pack1.xml,ndc_17_2_FlowTest_e2e_pack2.xml'
+        default: 'test1,test2'
+      max_parallel:
+        type: string
+        required: true
 
 jobs:
   setup-matrix:
@@ -16,21 +20,17 @@ jobs:
     steps:
       - name: Generate Matrix JSON
         run: |
-          # Get the input value
-          FILE_LIST="${{ github.event.inputs.file_list }}"
-
-          # Convert the comma-separated list into a JSON array
+          FILE_LIST="${{ inputs.file_list }}"
           MATRIX=$(echo "[ $(echo $FILE_LIST | sed 's/,/\",\"/g' | sed 's/^/\"/;s/$/\"/') ]")
-
-          # Output the matrix JSON
           echo "Matrix JSON: $MATRIX"
-          echo "::set-output name=matrix::$MATRIX"
+          echo "matrix::$MATRIX" >> GITHUB_OUTPUT
         id: build-matrix
 
   run-matrix-jobs:
     needs: setup-matrix
     runs-on: ubuntu-latest
     strategy:
+      max-parallel: ${{ inputs.max_parallel }}
       matrix:
         file: ${{ fromJson(needs.setup-matrix.outputs.matrix) }}
     steps:
