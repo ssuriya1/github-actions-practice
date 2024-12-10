@@ -9,7 +9,7 @@ on:
         required: true
         default: 'test1,test2'
       max_parallel:
-        type: string
+        type: number
         description: 'Maximum parallel jobs'
         required: true
         default: '2'
