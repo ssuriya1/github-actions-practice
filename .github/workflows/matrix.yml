@@ -10,6 +10,9 @@ on:
         default: 'test1,test2'
       max_parallel:
         type: string
+        description: 'Maximum parallel jobs'
+        required: true
+        default: '2'
 
 jobs:
   setup-matrix:
@@ -19,20 +22,19 @@ jobs:
       count: ${{ steps.build-matrix.outputs.count }}
     steps:
       - name: Generate Matrix JSON
+        id: build-matrix
         run: |
           FILE_LIST="${{ inputs.file_list }}"
           COUNT=$(echo $FILE_LIST | tr -cd ',' | wc -c)
           COUNT=$((COUNT + 1))
-          echo $COUNT
+          echo "Count: $COUNT"
           MATRIX=$(echo "[ $(echo $FILE_LIST | sed 's/,/\",\"/g' | sed 's/^/\"/;s/$/\"/') ]")
-          echo "matrix::$MATRIX" >> GITHUB_OUTPUT
-          echo "count::$COUNT" >> GITHUB_OUTPUT
-        id: build-matrix
+          echo "matrix=$MATRIX" >> $GITHUB_OUTPUT
+          echo "count=$COUNT" >> $GITHUB_OUTPUT
       
-      - name: Max Parallel Run
+      - name: Log Count
         run: |
-          echo "Count: ${{ steps.build-matrix.outputs.count }}"
-
+          echo "File count: ${{ steps.build-matrix.outputs.count }}"
 
   run-matrix-jobs:
     needs: setup-matrix
