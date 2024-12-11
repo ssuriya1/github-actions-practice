@@ -20,7 +20,7 @@ jobs:
     outputs:
       matrix: ${{ steps.build-matrix.outputs.matrix }}
       count: ${{ steps.build-matrix.outputs.count }}
-      adjusted_max_parallel: ${{ steps.build-matrix.outputs.adjusted_max_parallel }}
+      adjusted_max_parallel: ${{ steps.adjust-max-parallel.outputs.adjusted_max_parallel }}
     steps:
       - name: Generate Matrix JSON
         id: build-matrix
@@ -40,7 +40,7 @@ jobs:
           INPUT_COUNT=${{ inputs.max_parallel }}
           
           # Adjust max_parallel
-          if [[ "$INPUT_COUNT" -lt "$FILE_COUNT" ]]; then
+          if [ "$INPUT_COUNT" -lt "$FILE_COUNT" ]; then
             ADJUSTED_COUNT=$FILE_COUNT
           else
             ADJUSTED_COUNT=$INPUT_COUNT
@@ -48,15 +48,3 @@ jobs:
           
           echo "Adjusted max_parallel: $ADJUSTED_COUNT"
           echo "adjusted_max_parallel=$ADJUSTED_COUNT" >> $GITHUB_OUTPUT
-
-  run-matrix-jobs:
-    needs: setup-matrix
-    runs-on: ubuntu-latest
-    strategy:
-      max-parallel: ${{ fromJson(needs.setup-matrix.outputs.adjusted_max_parallel) }}
-      matrix:
-        file: ${{ fromJson(needs.setup-matrix.outputs.matrix) }}
-    steps:
-      - name: Process File
-        run: |
-          echo "Processing file: ${{ matrix.file }}"
