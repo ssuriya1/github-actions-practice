@@ -5,14 +5,14 @@ on:
     inputs:
       file_list:
         type: string
-        description: 'Comma-separated list of XML files'
+        description: 'test inputs'
         required: true
         default: 'test1,test2'
       max_parallel:
         type: number
         description: 'Maximum parallel jobs'
         required: true
-        default: '2'
+        default: 2
 
 jobs:
   setup-matrix:
@@ -20,6 +20,7 @@ jobs:
     outputs:
       matrix: ${{ steps.build-matrix.outputs.matrix }}
       count: ${{ steps.build-matrix.outputs.count }}
+      adjusted_max_parallel: ${{ steps.build-matrix.outputs.adjusted_max_parallel }}
     steps:
       - name: Generate Matrix JSON
         id: build-matrix
@@ -32,26 +33,27 @@ jobs:
           echo "matrix=$MATRIX" >> $GITHUB_OUTPUT
           echo "count=$COUNT" >> $GITHUB_OUTPUT
 
-      - name: Log Count
+      - name: Adjust max_parallel based on count
+        id: adjust-max-parallel
         run: |
           FILE_COUNT=${{ steps.build-matrix.outputs.count }}
           INPUT_COUNT=${{ inputs.max_parallel }}
-          if [[ "$FILE_COUNT" =~ ^[0-9]+$ ]] && [[ "$INPUT_COUNT" =~ ^[0-9]+$ ]]; then
-            if [ "$INPUT_COUNT" -le "$FILE_COUNT" ]; then
-              FILE_COUNT="$INPUT_COUNT"
-            else
-              echo "File count is greater than input count"
-            fi
+          
+          # Adjust max_parallel
+          if [[ "$INPUT_COUNT" -lt "$FILE_COUNT" ]]; then
+            ADJUSTED_COUNT=$FILE_COUNT
           else
-            echo "One or both variables are not valid numbers."
+            ADJUSTED_COUNT=$INPUT_COUNT
           fi
-          echo "count=$FILE_COUNT" >> $GITHUB_OUTPUT
+          
+          echo "Adjusted max_parallel: $ADJUSTED_COUNT"
+          echo "adjusted_max_parallel=$ADJUSTED_COUNT" >> $GITHUB_OUTPUT
 
   run-matrix-jobs:
     needs: setup-matrix
     runs-on: ubuntu-latest
     strategy:
-      max-parallel: ${{ fromJson(needs.setup-matrix.outputs.count) }}
+      max-parallel: ${{ fromJson(needs.setup-matrix.outputs.adjusted_max_parallel) }}
       matrix:
         file: ${{ fromJson(needs.setup-matrix.outputs.matrix) }}
     steps:
