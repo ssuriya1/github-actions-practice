@@ -39,8 +39,7 @@ jobs:
           FILE_COUNT=${{ steps.build-matrix.outputs.count }}
           INPUT_COUNT=${{ inputs.max_parallel }}
           
-          # Adjust max_parallel
-          if [ "$INPUT_COUNT" -lt "$FILE_COUNT" ]; then
+          if [ "$INPUT_COUNT" -gt "$FILE_COUNT" ]; then
             ADJUSTED_COUNT=$FILE_COUNT
           else
             ADJUSTED_COUNT=$INPUT_COUNT
