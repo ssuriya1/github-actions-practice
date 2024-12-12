@@ -24,9 +24,10 @@ jobs:
     steps:
       - name: Generate Matrix JSON
         id: build-matrix
+        env:
+          FILE_LIST: ${{ inputs.file_list }}
         run: |
-          FILE_LIST="${{ inputs.file_list }}"
-          COUNT=$(echo $FILE_LIST | tr -cd ',' | wc -c)
+          COUNT=$(echo "$FILE_LIST" | tr -cd ',' | wc -c)
           COUNT=$((COUNT + 1))
           echo "Count: $COUNT"
           MATRIX=$(echo "[ $(echo $FILE_LIST | sed 's/,/\",\"/g' | sed 's/^/\"/;s/$/\"/') ]")
@@ -35,15 +36,16 @@ jobs:
 
       - name: Adjust max_parallel based on count
         id: adjust-max-parallel
+        env:
+          FILE_COUNT: ${{ steps.build-matrix.outputs.count }}
+          INPUT_COUNT: ${{ inputs.max_parallel }}
         run: |
-          FILE_COUNT=${{ steps.build-matrix.outputs.count }}
-          INPUT_COUNT=${{ inputs.max_parallel }}
-          
-          if [ "$INPUT_COUNT" -gt "$FILE_COUNT" ]; then
+          if [ "$FILE_COUNT" -eq 0 ]; then
+            ADJUSTED_COUNT=0
+          elif [ "$INPUT_COUNT" -gt "$FILE_COUNT" ]; then
             ADJUSTED_COUNT=$FILE_COUNT
           else
             ADJUSTED_COUNT=$INPUT_COUNT
           fi
-          
           echo "Adjusted max_parallel: $ADJUSTED_COUNT"
           echo "adjusted_max_parallel=$ADJUSTED_COUNT" >> $GITHUB_OUTPUT
