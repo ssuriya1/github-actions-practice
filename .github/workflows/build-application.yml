@@ -1,0 +1,86 @@
+name: Run Payload CMS (NPM & Cloudflare)
+
+on:
+  workflow_dispatch:
+    inputs:
+      duration:
+        description: 'running time?'
+        required: true
+        default: '1'
+        type: choice
+        options:
+          - '1'
+          - '2'
+          - '3'
+          - '4'
+          - '5'
+          - '6'
+
+jobs:
+  run-payload:
+    runs-on: ubuntu-latest
+
+    env:
+      DATABASE_URI: file:./payload-build.db 
+
+    steps:
+      - name: Checkout Public Repo
+        uses: actions/checkout@v4
+
+      - name: Checkout Private Repo
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ secrets.PRIVATE_REPO_PATH }}
+          token: ${{ secrets.CMS_PRIVATE_TOKEN }}
+          path: my-app
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Dependencies
+        run: |
+          cd my-app
+          if [ -f "package-lock.json" ]; then
+            npm ci
+          else
+            npm install
+          fi
+
+      - name: Start Payload CMS
+        run: |
+          cd my-app
+          export PAYLOAD_SECRET=$(openssl rand -hex 32)
+          nohup npm run dev -- --port 3000 > payload.log 2>&1 &
+          echo "Waiting for Payload to initialize..."
+          sleep 10
+
+      - name: Start Cloudflare Tunnel
+        run: |
+          wget -q https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 -O cloudflared
+          chmod +x cloudflared
+          
+          ./cloudflared tunnel --url http://localhost:3000 > cloudflare.log 2>&1 &
+          sleep 8
+          
+          # Parse the log to extract the temporary trycloudflare.com URL
+          PUBLIC_URL=$(grep -oE "https://[a-zA-Z0-9.-]+\.trycloudflare\.com" cloudflare.log | head -n 1)
+          
+          echo "========================================================="
+          echo "🎉 PAYLOAD CMS IS LIVE VIA CLOUDFLARE!"
+          echo "Copy this URL into your local Angular App settings:"
+          echo "👉 $PUBLIC_URL 👈"
+          echo "========================================================="
+
+      - name: Hold Runner Alive
+        run: |
+          HOURS=${{ github.event.inputs.duration }}
+          SECONDS=$((HOURS * 3600))
+          echo "Holding runner open for $HOURS hour(s)..."
+          
+          while [ $SECONDS -gt 0 ]; do
+            sleep 60
+            SECONDS=$((SECONDS - 60))
+          done
+          echo "Time expired. Shutting down runner."
